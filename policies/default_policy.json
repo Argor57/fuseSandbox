@@ -1,0 +1,24 @@
+{
+  "allow_network": true,
+  "readable_paths": [
+    "/tmp"
+  ],
+  "writable_paths": [
+    "/tmp"
+  ],
+  "executable_paths": [],
+  "restricted_paths": [
+    "/home",
+    "/etc",
+    "/usr",
+    "/bin"
+  ],
+  "bubblewrap_params": [
+    "--dev-bind", "/", "/",
+    "--bind", "/mnt/fuse_mount", "/root",
+    "--unshare-all",
+    "--proc", "/proc",
+    "--dir", "/tmp",
+    "--share-net"
+  ]
+}

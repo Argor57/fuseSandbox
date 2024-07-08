@@ -1,0 +1,11 @@
+Script started on 2023-12-12 13:30:15+00:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="191" LINES="44"]
+[?2004hvagrant@AC-Dev:~/src$ python infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v
+[?2004l{'read': {'/*': True}, 'write': {'/*': True}, 'execute': {'/*': True}}
+[?2004hvagrant@AC-Dev:~/src$ python infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Kecho "FUSE (Filesystem in Userspace) is an interface for userspace programs to export a filesystem to the Linux kernel." > mountpoint/file.md[C[C[C[C[C[C[6P[6P[4P[1P[2P[11P[2P[7P[1P[1P[1P[C[1@.[C[1@.[C[C[C[C[C[C[C[C[C[C[C[C[12P[10P[4P[10P[3P[3P[11P[3P[11P[6P[1@L[1@o[1@r[1@e[1@m[1@ [1@I[1@p[1@s[1@u[1@m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+[?2004l[?2004hvagrant@AC-Dev:~/src$ cat *.log | grep SYSCALL
+[?2004l2023-12-12 13:30:38,693 | DEBUG    | infuser / open         | SYSCALL (open) --- Path: /file.md
+2023-12-12 13:30:38,694 | DEBUG    | infuser / write        | SYSCALL (write) --- Path: /file.md
+[?2004hvagrant@AC-Dev:~/src$ [?2004l
+exit
+
+Script done on 2023-12-12 13:30:46+00:00 [COMMAND_EXIT_CODE="0"]

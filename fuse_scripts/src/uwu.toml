@@ -1,0 +1,38 @@
+["/foo2"]
+IP = "127.0.0.1"
+PORT = 2233
+
+["/file.txt".write]
+  IP = "127.0.0.1"
+  PORT = 2233
+
+["/file.txt"]
+  
+  ["/file.txt".open]
+   IP = "127.0.0.1"
+   PORT = 2233
+  
+["/foo".readdir."1"]
+IP = "127.0.0.1"
+PORT = 2233
+
+["/foo/baz"]
+
+  ["/foo/baz".read]
+    ["/foo/baz".read."1"]
+    IP = "127.0.0.1"
+    PORT = 2233
+
+  ["/foo/baz".write."1"]
+  IP = "127.0.0.1"
+  PORT = 2234
+
+  ["/foo/baz".write."2"]
+  IP = "127.0.0.1"
+  PORT = 2233
+
+
+[".*.c"."open"]
+IP = "127.0.0.1"
+PORT = 2233
+

@@ -1,0 +1,56 @@
+Script started on 2023-12-14 18:19:44+00:00 [TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="191" LINES="34"]
+[?2004hvagrant@AC-Dev:~/src$ ./mountpoint/filepython infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p policy.ini
+[?2004l[?2004hvagrant@AC-Dev:~/src$ python infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p policy.ini[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C./mountpoint/file[K
+[?2004l                            Art. 2 Abs. 1 GG
+(1) Jeder hat das Recht auf die freie Entfaltung seiner Persönlichkeit, soweit
+er nicht die Rechte anderer verletzt und nicht gegen die verfassungsmäßige
+Ordnung oder das Sittengesetz verstößt. (2) Jeder hat das Recht auf Leben und
+körperliche Unversehrtheit. Die Freiheit der Person ist unverletzlich. In diese
+Rechte darf nur auf Grund eines Gesetzes eingegriffen werden.
+[?2004hvagrant@AC-Dev:~/src$ ./mountpoint/filepython infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p policy.ini[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C./mountpoint/file[Kpython infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p policy.ini[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C./access to_mount/file.sh[Kmountpoint/file.sh[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cpython infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p policy.ini[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[47Pecho -e "[execute]\n/file.sh = deny" >[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[47@python infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[47Pecho -e "[execute]\n/file.sh = deny" >[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cxec env TERM='dumb' INSIDE_EMACS='28.2,tramp:2.5.3.28.2' ENV='' HISTFILE=~/.tramp_history PROMPT_COMMAND='' PS1=\#\$\  PS2='' PS3='' /bin/sh  -i[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[96Pcho -e "[execute]\n/file.sh = deny" > policy.ini[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[47@python infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[47Pecho -e "[execute]\n/file.sh = deny" >[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[47@python infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C./access mountpoint/file.sh[K[2Pto_mount/file.sh[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cpython infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p policy.ini[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C./mountpoint/file[Kpython infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p policy.ini[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C./mountpoint/file[K[Kecho "\n" >> mountpoint/i[Kfile
+[?2004l[?2004hvagrant@AC-Dev:~/src$ echo "\n" >> mountpoint/file[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[11P./mountpoint/file
+[?2004l[?2004hvagrant@AC-Dev:~/src$ cat *.log
+[?2004l2023-12-14 18:19:46,424 | DEBUG    | infuser / parse_policy | read - [('/', 'allow'), ('/.*', 'allow')]
+2023-12-14 18:19:46,425 | DEBUG    | infuser / parse_policy | write - [('/', 'allow'), ('/.*', 'allow')]
+2023-12-14 18:19:46,425 | DEBUG    | infuser / parse_policy | execute - [('/', 'deny'), ('/.*', 'deny')]
+2023-12-14 18:19:46,425 | DEBUG    | infuser / parse_policy | written-no-execute - [('/file', 'deny')]
+2023-12-14 18:19:48,624 | DEBUG    | infuser / check_state  | /file has not been successfully accessed yet
+2023-12-14 18:19:48,625 | DEBUG    | infuser / check_policy | ACCESS (open) GRANTED --- Path: /file --- Policy-Entry: '/: True'
+2023-12-14 18:19:48,625 | DEBUG    | infuser / append       | Added entry {'Path': '/file', 'Access': 'open', 'Time': '2023-12-14 18:19:48', 'Success': True} to accessed objects
+2023-12-14 18:19:48,625 | DEBUG    | infuser / open         | open - 32800 - /file
+2023-12-14 18:19:48,626 | DEBUG    | infuser / check_state  | Last successful access: {'Path': '/file', 'Access': 'open', 'Time': '2023-12-14 18:19:48', 'Success': True}
+2023-12-14 18:19:48,626 | DEBUG    | infuser / check_policy | ACCESS (read) GRANTED --- Path: /file --- Policy-Entry: '/: True'
+2023-12-14 18:19:48,627 | DEBUG    | infuser / append       | Added entry {'Path': '/file', 'Access': 'read', 'Time': '2023-12-14 18:19:48', 'Success': True} to accessed objects
+2023-12-14 18:19:48,627 | DEBUG    | infuser / read         | read - /file
+2023-12-14 18:20:04,341 | DEBUG    | infuser / check_state  | Last successful access: {'Path': '/file', 'Access': 'open', 'Time': '2023-12-14 18:19:48', 'Success': True}
+2023-12-14 18:20:04,342 | DEBUG    | infuser / check_policy | ACCESS (open) GRANTED --- Path: /file --- Policy-Entry: '/: True'
+2023-12-14 18:20:04,342 | DEBUG    | infuser / append       | Added entry {'Path': '/file', 'Access': 'open', 'Time': '2023-12-14 18:20:04', 'Success': True} to accessed objects
+2023-12-14 18:20:04,342 | DEBUG    | infuser / open         | open - 33793 - /file
+2023-12-14 18:20:04,345 | DEBUG    | infuser / check_state  | Last successful access: {'Path': '/file', 'Access': 'open', 'Time': '2023-12-14 18:20:04', 'Success': True}
+2023-12-14 18:20:04,345 | DEBUG    | infuser / check_policy | ACCESS (write) GRANTED --- Path: /file --- Policy-Entry: '/: True'
+2023-12-14 18:20:04,345 | DEBUG    | infuser / append       | Added entry {'Path': '/file', 'Access': 'write', 'Time': '2023-12-14 18:20:04', 'Success': True} to accessed objects
+2023-12-14 18:20:04,345 | DEBUG    | infuser / write        | write - /file
+2023-12-14 18:20:06,149 | DEBUG    | infuser / check_state  | Last successful access: {'Path': '/file', 'Access': 'open', 'Time': '2023-12-14 18:20:04', 'Success': True}
+2023-12-14 18:20:06,152 | DEBUG    | infuser / is_mimetype  | Mime type of /file is application/x-pie-executable. Testing for application or <None>
+2023-12-14 18:20:06,152 | DEBUG    | infuser / check_policy | ACCESS (open) GRANTED --- Path: /file --- Policy-Entry: '/: True'
+2023-12-14 18:20:06,152 | DEBUG    | infuser / append       | Added entry {'Path': '/file', 'Access': 'open', 'Time': '2023-12-14 18:20:06', 'Success': True} to accessed objects
+2023-12-14 18:20:06,152 | DEBUG    | infuser / open         | open - 32800 - /file
+2023-12-14 18:20:06,153 | DEBUG    | infuser / check_state  | Last successful access: {'Path': '/file', 'Access': 'open', 'Time': '2023-12-14 18:20:06', 'Success': True}
+2023-12-14 18:20:06,154 | DEBUG    | infuser / is_mimetype  | Mime type of /file is application/x-pie-executable. Testing for application or <None>
+2023-12-14 18:20:06,154 | INFO     | infuser / w_no_x       | ACCESS (read) DENIED --- Path: /file --- Accessed at 2023-12-14 18:20:04 with write access
+2023-12-14 18:20:06,161 | DEBUG    | infuser / check_state  | Last successful access: {'Path': '/file', 'Access': 'open', 'Time': '2023-12-14 18:20:06', 'Success': True}
+2023-12-14 18:20:06,162 | DEBUG    | infuser / is_mimetype  | Mime type of /file is application/x-pie-executable. Testing for application or <None>
+2023-12-14 18:20:06,162 | DEBUG    | infuser / check_policy | ACCESS (open) GRANTED --- Path: /file --- Policy-Entry: '/: True'
+2023-12-14 18:20:06,162 | DEBUG    | infuser / append       | Added entry {'Path': '/file', 'Access': 'open', 'Time': '2023-12-14 18:20:06', 'Success': True} to accessed objects
+2023-12-14 18:20:06,162 | DEBUG    | infuser / open         | open - 32768 - /file
+[?2004hvagrant@AC-Dev:~/src$ cat *.log./mountpoint/file[K[Kto_mount/file
+[?2004l                            Art. 2 Abs. 1 GG
+(1) Jeder hat das Recht auf die freie Entfaltung seiner Persönlichkeit, soweit
+er nicht die Rechte anderer verletzt und nicht gegen die verfassungsmäßige
+Ordnung oder das Sittengesetz verstößt. (2) Jeder hat das Recht auf Leben und
+körperliche Unversehrtheit. Die Freiheit der Person ist unverletzlich. In diese
+Rechte darf nur auf Grund eines Gesetzes eingegriffen werden.
+[?2004hvagrant@AC-Dev:~/src$ [?2004l
+exit
+
+Script done on 2023-12-14 18:20:18+00:00 [COMMAND_EXIT_CODE="0"]

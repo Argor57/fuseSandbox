@@ -1,0 +1,38 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.network "forwarded_port", guest: 22, host: 2221, protocol: "tcp"
+  config.vm.box = "debian/bookworm64" 
+  config.vm.box_version = "12.20231009.1"
+  config.vm.provider "virtualbox" do |vb|
+    config.vm.hostname = "AC-Dev"
+    vb.name = "AC-Dev"
+    vb.memory = "2048"
+    vb.cpus = "2"
+   end
+
+  config.vm.provision "file", source: "./src", \
+                      destination: "/home/vagrant/src"
+  config.vm.provision "file", source: "requirements.txt", \
+                      destination: "/home/vagrant/src/requirements.txt"
+  config.vm.provision "file", source: ".bashrc", \
+                      destination: "/home/vagrant/.bashrc"
+
+  config.vm.provision "shell", inline: <<-SHELL
+    apt update -y
+    apt-get install wget build-essential libreadline-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev -y
+    wget -c https://www.python.org/ftp/python/3.11.0/Python-3.11.0.tar.xz
+    tar -Jxvf Python-3.11.0.tar.xz
+    cd Python-3.11.0
+    ./configure --enable-optimizations
+    make altinstall
+    cd ..
+	rm -rf Python*
+    update-alternatives --install /usr/bin/python python /usr/local/bin/python3.11 1
+	apt install python3-pip vim fuse -y
+    pip3.11 install -r /home/vagrant/requirements.txt
+    rm -rf Python*
+    systemctl restart ntp
+  SHELL
+end
