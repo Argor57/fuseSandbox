@@ -46,12 +46,30 @@ def setup_fuse(fuse_mountpoint, fuse_command, debug_mode):
         debug_print(f"Starten des FUSE-Dateisystems mit dem Befehl: {fuse_command}", debug_mode)
         subprocess.Popen(fuse_command.split() + [fuse_mountpoint])
 
-def is_action_allowed(action, policy):
-    """Check if a specific action is allowed based on the policy."""
-    if action in policy.get('allowed_actions', []):
-        return True
-    elif action in policy.get('denied_actions', []):
-        return False
-    else:
-        return None
+def create_policy_ini(json_policy_path, ini_policy_path):
+    # Read the JSON policy file
+    with open(json_policy_path, 'r') as file:
+        policies = json.load(file)
+    
+    # Create a ConfigParser object
+    config = configparser.ConfigParser()
+    
+    # Populate the ConfigParser object with the policies
+    for operation, rules in policies.items():
+        config[operation] = {rule['pattern']: rule['action'] for rule in rules}
+    
+    # Write the policies to the .ini file
+    with open(ini_policy_path, 'w') as configfile:
+        config.write(configfile)
+
+    return ini_policy_path
+
+#def is_action_allowed(action, policy):
+#    """Check if a specific action is allowed based on the policy."""
+#    if action in policy.get('allowed_actions', []):
+#        return True
+#    elif action in policy.get('denied_actions', []):
+#        return False
+#    else:
+#        return None
 
