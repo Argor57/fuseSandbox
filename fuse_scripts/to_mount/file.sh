@@ -1,0 +1,2 @@
+file: /file.sh
+\n

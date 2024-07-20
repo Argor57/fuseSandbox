@@ -1,0 +1,31 @@
+Script started on 2023-12-17 07:40:06+00:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="191" LINES="25"]
+[?2004hvagrant@AC-Dev:~/src$ python infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p policy.ini[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ctest_foo [Kpython infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p policy.ini
+[?2004l[?2004hvagrant@AC-Dev:~/src$ cat mountpoint/foo/a
+[?2004luid=1000(vagrant) gid=1000(vagrant) groups=1000(vagrant)
+[?2004hvagrant@AC-Dev:~/src$ cat mountpoint/foo/a[Kb
+[?2004lcat: mountpoint/foo/b: Invalid argument
+[?2004hvagrant@AC-Dev:~/src$ cat *.log
+[?2004l2023-12-17 07:40:07,705 | DEBUG    | infuser / parse_policy       | read - [('/', 'allow'), ('/.*', 'allow')]
+2023-12-17 07:40:07,705 | DEBUG    | infuser / parse_policy       | write - [('/', 'allow'), ('/.*', 'allow')]
+2023-12-17 07:40:07,705 | DEBUG    | infuser / parse_policy       | execute - [('/', 'allow'), ('/.*', 'allow')]
+2023-12-17 07:40:07,706 | DEBUG    | infuser / parse_policy       | written-no-execute - []
+2023-12-17 07:40:07,706 | DEBUG    | infuser / parse_policy       | first-object-only - [('/foo', 'deny')]
+2023-12-17 07:40:17,007 | DEBUG    | infuser / check_state        | No entry recorded yet.
+2023-12-17 07:40:17,007 | DEBUG    | infuser / check_policy       | ACCESS (open) GRANTED --- Path: /foo/a --- Policy-Entry: '/: True'
+2023-12-17 07:40:17,008 | DEBUG    | infuser / append             | Added entry {'Path': '/foo/a', 'Access': 'open', 'Time': '2023-12-17 07:40:17', 'Success': True} to accessed objects
+2023-12-17 07:40:17,008 | DEBUG    | infuser / open               | open - 32768 - /foo/a
+2023-12-17 07:40:17,008 | DEBUG    | infuser / check_state        | Last successful access: {'Path': '/foo/a', 'Access': 'open', 'Time': '2023-12-17 07:40:17', 'Success': True}
+2023-12-17 07:40:17,008 | DEBUG    | infuser / check_state        | Policy 'written-no-execute' has no defined objects
+2023-12-17 07:40:17,008 | DEBUG    | infuser / check_state        | first-object-only denies prefix /foo
+2023-12-17 07:40:17,008 | DEBUG    | infuser / first_object_only  | The first selected object is /foo/a. Granting access to /foo/a
+2023-12-17 07:40:17,008 | DEBUG    | infuser / check_policy       | ACCESS (read) GRANTED --- Path: /foo/a --- Policy-Entry: '/: True'
+2023-12-17 07:40:17,008 | DEBUG    | infuser / append             | Added entry {'Path': '/foo/a', 'Access': 'read', 'Time': '2023-12-17 07:40:17', 'Success': True} to accessed objects
+2023-12-17 07:40:17,008 | DEBUG    | infuser / read               | read - /foo/a
+2023-12-17 07:40:18,786 | DEBUG    | infuser / check_state        | No successful access for /foo/b
+2023-12-17 07:40:18,786 | DEBUG    | infuser / check_state        | Policy 'written-no-execute' has no defined objects
+2023-12-17 07:40:18,786 | DEBUG    | infuser / check_state        | first-object-only denies prefix /foo
+2023-12-17 07:40:18,786 | INFO     | infuser / first_object_only  | ACCESS DENIED --- Path: /foo/b --- The first selected object was /foo/a
+[?2004hvagrant@AC-Dev:~/src$ [?2004l
+exit
+
+Script done on 2023-12-17 07:40:23+00:00 [COMMAND_EXIT_CODE="0"]

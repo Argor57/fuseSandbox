@@ -1,0 +1,15 @@
+Script started on 2023-12-14 18:15:16+00:00 [TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="191" LINES="51"]
+[?2004hvagrant@AC-Dev:~/src$ python infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p policy.ini[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[47Pecho -e "[execute]\n/file.sh = deny" >[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cxec env TERM='dumb' INSIDE_EMACS='28.2,tramp:2.5.3.28.2' ENV='' HISTFILE=~/.tramp_history PROMPT_COMMAND='' PS1=\#\$\  PS2='' PS3='' /bin/sh  -i[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[96Pcho -e "[execute]\n/file.sh = deny" > policy.ini
+[?2004l[?2004hvagrant@AC-Dev:~/src$ echo -e "[execute]\n/file.sh = deny" > policy.ini[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[47@python infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v -p[C[C[C[C[C[C[C[C[C[C[C
+[?2004l[?2004hvagrant@AC-Dev:~/src$ ./access mountpoint/file.sh
+[?2004lDer Benutzer hat Lesezugriff auf die Datei.
+Der Benutzer hat Schreibzugriff auf die Datei.
+Zugriff verweigert: Operation not permitted
+[?2004hvagrant@AC-Dev:~/src$ ./access to_mount/file.sh
+[?2004lDer Benutzer hat Lesezugriff auf die Datei.
+Der Benutzer hat Schreibzugriff auf die Datei.
+Der Benutzer hat Ausführungszugriff auf die Datei.
+[?2004hvagrant@AC-Dev:~/src$ [?2004l
+exit
+
+Script done on 2023-12-14 18:15:34+00:00 [COMMAND_EXIT_CODE="0"]

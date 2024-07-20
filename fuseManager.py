@@ -4,7 +4,7 @@ import json
 import os
 import subprocess
 import sys
-from fuse_scripts.src import infuser
+from fuse_scripts import infuser
 import logging
 import time
 
