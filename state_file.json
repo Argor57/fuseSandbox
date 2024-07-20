@@ -1,0 +1,16 @@
+[
+    {
+        "Path": "/example/path/file.txt",
+        "Prefix": "/example/path",
+        "Access": "read",
+        "Time": "2024-07-19 12:34:56",
+        "Success": true
+    },
+    {
+        "Path": "/another/path/file2.txt",
+        "Prefix": "/another/path",
+        "Access": "write",
+        "Time": "2024-07-19 12:35:56",
+        "Success": false
+    }
+]

@@ -1,0 +1,79 @@
+# Projektverzeichnisstruktur
+
+```plaintext
+/
+├── fuseSandbox.py
+├── simpleSandbox.py
+├── sharedFunctions.py
+├── sandboxFlags.py
+├── fuse_scripts
+│   ├── access.c
+│   ├── infuser_setup.py
+│   ├── open.c
+│   ├── requirements.txt
+│   ├── server.py
+│   ├── shell.nix
+│   ├── Vagrantfile
+│   ├── src
+│   │   ├── fileoperations.py
+│   │   ├── infuser.py
+│   │   ├── infuser_setup.py
+│   │   ├── policy.ini
+│   │   ├── server.py
+│   │   ├── uwu.toml
+│   │   ├── to_mount
+│   │   │   ├── file
+│   │   │   ├── file.c
+│   │   │   ├── file.sh
+│   │   │   ├── file.txt
+│   │   │   ├── demo
+│   │   │   │   ├── ewww-demo.c
+│   │   │   │   ├── ewww-malware.py
+│   │   │   │   ├── uwu-data.txt
+│   │   │   │   ├── uwu-demo.py
+│   │   │   │   ├── uwu-demo.sh
+│   │   │   ├── foo
+│   │   │   ├── foo2
+│   ├── script_logs
+│   │   ├── 00_basic_mount.script
+│   │   ├── 01_restricted_mount.script
+│   │   ├── 02_read.script
+│   │   ├── 03_write.script
+│   │   ├── 04_execute.script
+│   │   ├── 04_execute_script.script
+│   │   ├── 05_written_no_execute.script
+│   │   ├── 06_access_execute_section.script
+│   │   ├── 07_first_object_only.script
+│   │   ├── 09_state_file.script
+│   │   ├── 10_ewww_demo.script
+│   │   ├── 11_uwu_demo.script
+│   │   ├── ewww-crontab
+│   │   ├── ewww-demo.json
+│   ├── docs
+│   │   ├── conf.py
+│   │   ├── index.rst
+│   │   ├── make.bat
+│   │   ├── Makefile
+│   │   ├── source
+│   │   │   ├── fileoperations.rst
+│   │   │   ├── infuser.rst
+│   │   │   ├── infuser_setup.rst
+│   │   │   ├── modules.rst
+│   │   │   ├── server.rst
+├── sandbox_scripts
+│   ├── applications-conf.json
+│   ├── client.py
+│   ├── namespace_launcher.py
+│   ├── privelege-executer.py
+│   ├── runAsServer.py
+│   ├── service2.py
+│   ├── startupHandler.py
+│   ├── pulse
+│   │   ├── client.conf
+├── dbus_scripts
+│   ├── dbus_service.py
+│   ├── client.py
+├── policies
+│   ├── default_policy.json
+
+python3 fuseSandbox.py "firefox" "/mnt/fuse_mount" "fuse-overlayfs -o lowerdir=/,upperdir=/mnt/fuse_mount,workdir=/mnt/fuse_work" --debug

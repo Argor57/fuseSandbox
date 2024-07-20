@@ -1,0 +1,7 @@
+python-magic
+fusepy
+Sphinx
+flake8
+black
+isort
+pylint

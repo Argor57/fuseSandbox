@@ -3,75 +3,93 @@ import os
 import sys
 import argparse
 import signal
-from sharedFunctions import DEFAULT_POLICY_PATH, debug_print, load_policy, apply_policy, unmount_fuse, setup_fuse
+import json
 
-fuse_mountpoint = None
+from fuseManager import start_fuse_filesystem, stop_fuse_filesystem
+from policyManager import build_bubblewrap_command, create_policy_ini, check_and_create_directory, merge_policies
+
 debug_mode = False
+process = None
 
 def signal_handler(sig, frame):
     """Handle termination signals to ensure clean unmounting of FUSE filesystem."""
+    global process
     print('Termination signal received')
-    unmount_fuse(fuse_mountpoint, debug_mode)
+    if process:
+        process.terminate()
+        process.wait()
+    stop_fuse_filesystem()
     sys.exit(0)
 
-def launch_application(app_command, mountpoint, fuse_command, username):
+def launch_application(app_command, policy_file, default_policy_file, username, mount_dir):
     """Launch an application within a Bubblewrap sandbox with FUSE filesystem mounted."""
-    global fuse_mountpoint
-    fuse_mountpoint = mountpoint
-
-    # Load the default policy
-    default_policy = load_policy(DEFAULT_POLICY_PATH, debug_mode)
-
-    # Apply the default policy
-    apply_policy(default_policy, debug_mode)
+    global debug_mode, process
 
     try:
-        # Setup the FUSE filesystem
-        setup_fuse(fuse_mountpoint, fuse_command, debug_mode)
+        # Extract policy data from the JSON file
+        with open(policy_file, 'r') as json_file:
+            incomplete_policy = json.load(json_file)
+
+        # Extract default policy data
+        with open(default_policy_file, 'r') as json_file:
+            default_policy = json.load(json_file)
+
+        # Merge policies
+        policy_data = merge_policies(incomplete_policy, default_policy)
+
+        # Replace placeholders with the actual mount directory and username
+        policy_data = json.loads(json.dumps(policy_data).replace("{mount_point}", mount_dir))
+
+        policy_data = json.loads(json.dumps(policy_data).replace("{username}", username))
+
+        # Check and create the mount directory and necessary paths
+        check_and_create_directory(mount_dir, policy_data, username)
+
+        # Create the policy INI file
+        policy_ini_path = create_policy_ini(policy_file, debug_mode)
+
+        # Setup the FUSE filesystem using infuser.py
+        start_fuse_filesystem(mount_dir, policy_ini_path, policy_data, debug_mode)
 
         # Build the Bubblewrap command from the policy
-        bwrap_command = ['sudo', '-u', username, 'bwrap'] + default_policy.get("bubblewrap_params", []) + [
-            '--bind', fuse_mountpoint, '/mnt/fuse_mount',
-            '--chdir', '/mnt/fuse_mount'
-        ] + app_command
+        bwrap_command = build_bubblewrap_command(policy_data, app_command)
 
         # Run the application in the sandbox
-        debug_print(f"Starting application {app_command} in a sandbox...", debug_mode)
-        debug_print(f"Bubblewrap command: {' '.join(bwrap_command)}", debug_mode)
-        subprocess.run(bwrap_command)
+        if debug_mode:
+            print(f"Starting application {app_command} in a sandbox...")
+            print(f"Bubblewrap command: {' '.join(bwrap_command)}")
+        process = subprocess.Popen(bwrap_command)
+        process.wait()
     except Exception as e:
-        debug_print(f"[ERROR] An error occurred: {e}", debug_mode)
+        if debug_mode:
+            print(f"[ERROR] An error occurred: {e}")
     finally:
-        # This block will run if any exception is raised during the try block
-        try:
-            unmount_fuse(fuse_mountpoint, debug_mode)
-        except Exception as e:
-            debug_print(f"[ERROR] Failed to unmount FUSE filesystem: {e}", debug_mode)
+        process = None
+        stop_fuse_filesystem()
 
 def main():
     """Main function to parse arguments and launch the application."""
     global debug_mode
-    # Set up signal handling
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
 
     parser = argparse.ArgumentParser(description="Run an application in Bubblewrap with FUSE filesystem")
     parser.add_argument("app_command", type=str, help="Command to start the application")
-    parser.add_argument("fuse_mountpoint", type=str, help="Mountpoint for the FUSE filesystem")
-    parser.add_argument("fuse_command", type=str, help="Command to start the FUSE filesystem")
+    parser.add_argument("policy_file", type=str, help="Policy file for the FUSE filesystem",
+                        default="./policies/default_policy.json")
+    parser.add_argument("mount_dir", type=str, help="Directory for the FUSE mount point")
     parser.add_argument("--username", type=str, required=True, help="Username to run the application as")
     parser.add_argument("--debug", action="store_true", help="Enable debug mode")
+    parser.add_argument("--default_policy_file", type=str, help="Default policy file path",
+                        default="./policies/default_policy.json")
 
+    global args
     args = parser.parse_args()
 
-    # Enable debug mode if specified
     debug_mode = args.debug
-
-    # Split the application command into a list
     app_command = args.app_command.split()
 
-    # Launch the application with the given arguments
-    launch_application(app_command, args.fuse_mountpoint, args.fuse_command, args.username)
+    launch_application(app_command, args.policy_file, args.default_policy_file, args.username, args.mount_dir)
 
 if __name__ == '__main__':
     main()

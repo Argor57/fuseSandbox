@@ -2,7 +2,7 @@
 Version=1.0
 Name=Firefox Default Policy
 Comment=Run Firefox with the default FUSE sandbox policy
-Exec=gnome-terminal -- bash -c "source /root/venv/bin/activate && sudo python3 /mnt/shared/fuseSandbox/simpleSandbox.py 'firefox' '/mnt/fuse_mount' 'fuse-overlayfs -o lowerdir=/,upperdir=/mnt/fuse_mount,workdir=/mnt/fuse_work' --username melinoe --debug"
+Exec=gnome-terminal -- bash -c "python ./fuseSandbox/fuseSandbox.py "firefox" ./fuseSandbox/policies/firefox_policy.json ./fuseSandbox/fuse_mount --username melinoe --debug"
 Icon=firefox
 Terminal=true
 Type=Application

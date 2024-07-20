@@ -4,151 +4,103 @@ import sys
 import argparse
 import signal
 import json
-from sharedFunctions import DEFAULT_POLICY_PATH, debug_print, load_policy, apply_policy, unmount_fuse, setup_fuse
-from sandboxFlags import increment_counter, decrement_counter, check_other_apps_running, ensure_counter_file_exists
+import threading
 
-fuse_mountpoint = None
+from fuseManager import start_server, send_command
+from policyManager import build_bubblewrap_command, create_policy_ini, check_and_create_directory, merge_policies
+
 debug_mode = False
+process = None
 
 def signal_handler(sig, frame):
     """Handle termination signals to ensure clean unmounting of FUSE filesystem."""
+    global process
     print('Termination signal received')
-    decrement_counter()
-    if not check_other_apps_running():
-        unmount_fuse(fuse_mountpoint, debug_mode)
-        stop_fuse()
+    if process:
+        process.terminate()
+        process.wait()
+    send_command({'action': 'stop'})
     sys.exit(0)
 
-def check_fuse_running(mountpoint):
-    """Check if the FUSE filesystem is already running."""
-    result = subprocess.run(['mountpoint', '-q', mountpoint])
-    return result.returncode == 0
-
-def start_fuse(mountpoint, fuse_command):
-    """Start the FUSE filesystem."""
-    if not check_fuse_running(mountpoint):
-        setup_fuse(mountpoint, fuse_command, debug_mode)
-        increment_counter()
-
-def stop_fuse():
-    """Stop the FUSE filesystem if no other applications are running."""
-    global fuse_mountpoint
-    if fuse_mountpoint and not check_other_apps_running():
-        unmount_fuse(fuse_mountpoint, debug_mode)
-
-def merge_policies(default_policy, app_policy):
-    """Merge the application-specific policy with the default policy."""
-    merged_policy = default_policy.copy()
-    merged_policy.update(app_policy)
-    return merged_policy
-
-# Importing relevant functions from the fuse_scripts and sandbox_scripts
-sys.path.append(os.path.join(os.path.dirname(__file__), 'fuse_scripts/src'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'sandbox_scripts'))
-
-from namespace_launcher import setup as setup_uid_gid_maps
-# from client import run_application_in_sandbox
-
-def launch_application(app_command, mountpoint, fuse_command, app_policy_file):
+def launch_application(app_command, policy_file, default_policy_file, username, mount_dir):
     """Launch an application within a Bubblewrap sandbox with FUSE filesystem mounted."""
-    global fuse_mountpoint
-    fuse_mountpoint = mountpoint
-
-    # Load the default policy
-    default_policy = load_policy(DEFAULT_POLICY_PATH, debug_mode)
-
-    # Load the application-specific policy if provided
-    if app_policy_file and os.path.exists(app_policy_file):
-        app_policy = load_policy(app_policy_file, debug_mode)
-    else:
-        app_policy = {}
-
-    # Merge the policies
-    final_policy = merge_policies(default_policy, app_policy)
-
-    # Apply the combined policy
-    apply_policy(final_policy, debug_mode)
+    global debug_mode, process
 
     try:
-        # Start the FUSE filesystem if not already running
-        start_fuse(fuse_mountpoint, fuse_command)
+        # Extract policy data from the JSON file
+        with open(policy_file, 'r') as json_file:
+            incomplete_policy = json.load(json_file)
 
-        # Build the Bubblewrap command
-        bwrap_command = [
-            'bwrap'
-        ] + final_policy.get("bubblewrap_params", []) + [
-            '--bind', fuse_mountpoint, os.environ['HOME']
-        ] + app_command
+        # Extract default policy data
+        with open(default_policy_file, 'r') as json_file:
+            default_policy = json.load(json_file)
 
-        # Create pipes for namespace information
-        info_pipe = os.pipe()
-        blockns_pipe = os.pipe()
-        pid = os.fork()
-        if pid == 0:
-            # Child process
-            os.close(info_pipe[0])
-            os.close(blockns_pipe[1])
+        # Merge policies
+        policy_data = merge_policies(incomplete_policy, default_policy)
 
-            # Make pipes inheritable
-            os.set_inheritable(info_pipe[1], True)
-            os.set_inheritable(blockns_pipe[0], True)
+        # Replace placeholders with the actual mount directory and username
+        policy_data = json.loads(json.dumps(policy_data).replace("{mount_point}", mount_dir))
 
-            # Add namespace-related options to the Bubblewrap command
-            bwrap_command += [
-                '--userns-block-fd', '%i' % blockns_pipe[0],
-                '--info-fd', '%i' % info_pipe[1]
-            ]
+        policy_data = json.loads(json.dumps(policy_data).replace("{username}", username))
 
-            # Execute the application in the sandbox
-            debug_print(f"Starting application {app_command} in a sandbox...", debug_mode)
-            debug_print(f"Bubblewrap command: {' '.join(bwrap_command)}", debug_mode)
+        # Check and create the mount directory and necessary paths
+        check_and_create_directory(mount_dir, policy_data, username)
 
-            # Write to info_pipe before executing the command
-            child_pid = os.getpid()
-            os.write(info_pipe[1], json.dumps({'child-pid': child_pid}).encode())
-            os.execvp(bwrap_command[0], bwrap_command)
+        # Create the policy INI file
+        policy_ini_path = create_policy_ini(policy_file, debug_mode)
+
+        # Setup the FUSE filesystem using infuser.py
+        if send_command({'action': 'start', 'mountpoint': mount_dir, 'dir_to_mount': policy_ini_path, 'policy_dict': policy_data, 'debug_mode': debug_mode}):
+            print("FUSE filesystem started or already running")
         else:
-            # Parent process
-            os.close(info_pipe[1])
-            os.close(blockns_pipe[0])
-            data = json.load(os.fdopen(info_pipe[0]))
-            # Set up UID and GID maps for the child process
-            setup_uid_gid_maps(data['child-pid'], os.getuid(), os.getgid())
-            os.write(blockns_pipe[1], b'1')
+            print("Failed to start FUSE filesystem")
+            return
 
+        # Build the Bubblewrap command from the policy
+        bwrap_command = build_bubblewrap_command(policy_data, app_command)
+
+        # Run the application in the sandbox
+        if debug_mode:
+            print(f"Starting application {app_command} in a sandbox...")
+            print(f"Bubblewrap command: {' '.join(bwrap_command)}")
+        process = subprocess.Popen(bwrap_command)
+        process.wait()
+    except Exception as e:
+        if debug_mode:
+            print(f"[ERROR] An error occurred: {e}")
     finally:
-        # This block will run if any exception is raised during the try block
-        decrement_counter()
-        if not check_other_apps_running():
-            unmount_fuse(fuse_mountpoint, debug_mode)
-            stop_fuse()
+        process = None
+        # Notify server to decrement the counter
+        send_command({'action': 'stop'})
 
 def main():
     """Main function to parse arguments and launch the application."""
     global debug_mode
-    # Set up signal handling
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
 
-    parser = argparse.ArgumentParser(description="Run application in Bubblewrap with FUSE filesystem")
+    parser = argparse.ArgumentParser(description="Run an application in Bubblewrap with FUSE filesystem")
     parser.add_argument("app_command", type=str, help="Command to start the application")
-    parser.add_argument("fuse_mountpoint", type=str, help="Mountpoint for the FUSE filesystem")
-    parser.add_argument("fuse_command", type=str, help="Command to start the FUSE filesystem")
-    parser.add_argument("--app_policy_file", type=str, help="Path to the application-specific policy file", default=DEFAULT_POLICY_PATH)
+    parser.add_argument("policy_file", type=str, help="Policy file for the FUSE filesystem",
+                        default="./policies/default_policy.json")
+    parser.add_argument("mount_dir", type=str, help="Directory for the FUSE mount point")
+    parser.add_argument("--username", type=str, required=True, help="Username to run the application as")
     parser.add_argument("--debug", action="store_true", help="Enable debug mode")
+    parser.add_argument("--default_policy_file", type=str, help="Default policy file path",
+                        default="./policies/default_policy.json")
 
+    global args
     args = parser.parse_args()
 
-    # Enable debug mode if specified
     debug_mode = args.debug
-
-    # Ensure counter file exists
-    ensure_counter_file_exists()
-
-    # Split the application command into a list
     app_command = args.app_command.split()
-    # Launch the application with the given arguments
-    launch_application(app_command, args.fuse_mountpoint, args.fuse_command, args.app_policy_file)
+
+    # Start the server if not already running
+    if not os.path.exists('/tmp/fuse_server_socket'):
+        server_thread = threading.Thread(target=start_server)
+        server_thread.start()
+
+    launch_application(app_command, args.policy_file, args.default_policy_file, args.username, args.mount_dir)
 
 if __name__ == '__main__':
     main()
