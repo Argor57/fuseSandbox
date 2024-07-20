@@ -1,25 +1,0 @@
-Script started on 2023-12-11 23:23:24+00:00 [TERM="xterm-256color" TTY="/dev/pts/2" COLUMNS="191" LINES="25"]
-[?2004hvagrant@AC-Dev:~/src$ python infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -v
-[?2004l{'read': {'/*': True}, 'write': {'/*': True}, 'execute': {'/*': True}}
-[?2004hvagrant@AC-Dev:~/src$ ./moutn[K[Kntpoint/file
-[?2004l                            Art. 2 Abs. 1 GG
-(1) Jeder hat das Recht auf die freie Entfaltung seiner Persönlichkeit, soweit
-er nicht die Rechte anderer verletzt und nicht gegen die verfassungsmäßige
-Ordnung oder das Sittengesetz verstößt. (2) Jeder hat das Recht auf Leben und
-körperliche Unversehrtheit. Die Freiheit der Person ist unverletzlich. In diese
-Rechte darf nur auf Grund eines Gesetzes eingegriffen werden.
-[?2004hvagrant@AC-Dev:~/src$ cat *.log
-[?2004l2023-12-11 23:23:37,131 | INFO     | infuser / parse_policy | No policy-file provided, using empty default config
-2023-12-11 23:23:54,464 | DEBUG    | infuser / check_state  | /file has not been successfully accessed yet
-2023-12-11 23:23:54,464 | DEBUG    | infuser / check_policy | ACCESS (open) GRANTED --- Path: /file --- Policy-Entry: '/*: True'
-2023-12-11 23:23:54,465 | DEBUG    | infuser / append       | Added entry {'Path': '/file', 'Access': 'open', 'Time': '2023-12-11 23:23:54', 'Success': True} to accessed objects
-2023-12-11 23:23:54,465 | DEBUG    | infuser / open         | open - 32800 - /file
-2023-12-11 23:23:54,466 | DEBUG    | infuser / check_state  | Last successful access: {'Path': '/file', 'Access': 'open', 'Time': '2023-12-11 23:23:54', 'Success': True}
-2023-12-11 23:23:54,466 | DEBUG    | infuser / check_state  | Policy 'write-xor-execute' is not defined in the policy file
-2023-12-11 23:23:54,466 | DEBUG    | infuser / check_policy | ACCESS (read) GRANTED --- Path: /file --- Policy-Entry: '/*: True'
-2023-12-11 23:23:54,466 | DEBUG    | infuser / append       | Added entry {'Path': '/file', 'Access': 'read', 'Time': '2023-12-11 23:23:54', 'Success': True} to accessed objects
-2023-12-11 23:23:54,466 | DEBUG    | infuser / read         | read - /file
-[?2004hvagrant@AC-Dev:~/src$ [?2004l
-exit
-
-Script done on 2023-12-11 23:24:01+00:00 [COMMAND_EXIT_CODE="0"]

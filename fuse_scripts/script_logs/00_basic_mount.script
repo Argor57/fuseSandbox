@@ -1,24 +1,0 @@
-Script started on 2023-12-05 13:28:56+00:00 [TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="94" LINES="24"]
-[?2004h]0;vagrant@AC-Dev: ~/src[01;32mvagrant@AC-Dev[00m:[01;34m~/src[00m$ ls -lash to_mount/ mountpoint/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cpython infuser.py -d /home/vagrant/src/to_mount/-m /home/vagrant/src/mountpoint/[A]0;vagrant@AC-Dev: ~/src[01;32mvagrant@AC-Dev[00m:[01;34m~/src[00m$ [44Pls -lh to_mount/ mountpoint/
-[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
-[?2004lmountpoint/:
-total 0
-
-to_mount/:
-total 4.0K
--rw-r--r-- 1 vagrant vagrant 57 Dec  3 02:12 file.txt
-[?2004h]0;vagrant@AC-Dev: ~/src[01;32mvagrant@AC-Dev[00m:[01;34m~/src[00m$ ls -lh to_mount/ mountpoint/[2@as[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cpython infuser.py -d /home/vagrant/src/to_mount/-m /home/vagrant/src/mountpoint/[A]0;vagrant@AC-Dev: ~/src[01;32mvagrant@AC-Dev[00m:[01;34m~/src[00m$ [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C -m /home/vagrant/src/mountpoint/[A]0;vagrant@AC-Dev: ~/src[01;32mvagrant@AC-Dev[00m:[01;34m~/src[00m$ [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
-
-[?2004l[?2004h]0;vagrant@AC-Dev: ~/src[01;32mvagrant@AC-Dev[00m:[01;34m~/src[00m$ python infuser.py -d /home/vagrant/src/to_mount/ -m /home/vagrant/src/mountpoint/[A]0;vagrant@AC-Dev: ~/src[01;32mvagrant@AC-Dev[00m:[01;34m~/src[00m$ [44Pls -lh to_mount/ mountpoint/
-[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[2@as[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[2P[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
-[?2004lmountpoint/:
-total 0
--rw-r--r-- 1 vagrant vagrant 57 Dec  3 02:12 file.txt
-
-to_mount/:
-total 4.0K
--rw-r--r-- 1 vagrant vagrant 57 Dec  3 02:12 file.txt
-[?2004h]0;vagrant@AC-Dev: ~/src[01;32mvagrant@AC-Dev[00m:[01;34m~/src[00m$ [?2004l
-exit
-
-Script done on 2023-12-05 13:29:11+00:00 [COMMAND_EXIT_CODE="0"]

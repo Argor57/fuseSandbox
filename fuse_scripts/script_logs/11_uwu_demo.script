@@ -1,132 +1,0 @@
-Script started on 2024-02-27 21:56:26+00:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="95" LINES="48"]
-[?2004hvagrant@AC-Dev:~/src$ tail -f /tmp/logger_2024-02-27_20\:47\:16.log [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cls[Krm /tmp/*.logpython3.11 -m venv ewww_demo_mount/.venvpython3.11 -m venv ewww_demo_mount/.venvls[A[C[C[C[C[C[C[C[C[C[C[C[C[C[18Pcat /tmp/logger_2024-02-27_20\:44\:10.log  | grep check
-[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[CACCESS[1Pcheck[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cpython3.11 -m venv ewww_demo_mount/.venvpython3.11 -m venv ewww_demo_mount/.venvls[A[C[C[C[C[C[C[C[C[C[C[C[C[Crm /tmp/*.log[K
-[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cls[Ktail -f /tmp/logger_2024-02-27_20\:47\:16.log [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Khead -n 3 uwu.toml 
-[?2004l["/demo/uwu-data.txt".read]
-IP = "127.0.0.1"
-PORT = 2233
-[?2004hvagrant@AC-Dev:~/src$ überüberüberpython infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mountpoint -p policy.ini -v -u uwu.toml[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cpython infuser.py -d /home/vagrant/src/to_mount -m /home/vagrant/src/mount[12P[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
-[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
-[?2004l[?2004hvagrant@AC-Dev:~/src$ python to_mount/demo/uwu.[K-demo.py &[Kto_mount/demo/uwu-demo..sh[K[K[Ksh &
-[?2004l[1] 40607
-[?2004hvagrant@AC-Dev:~/src$ cat mountpoint/demo/uwu-data.txt 
-[?2004luid=1000(vagrant) gid=1000(vagrant) groups=1000(vagrant)
-[?2004hvagrant@AC-Dev:~/src$ cat infuser_2024-02-27_21:57[K[K[K[K[K[Kinfuser_2024-02-27_21:50:55.log
-[?2004l2024-02-27 21:50:55,701 | DEBUG    | infuser / parse_policy       | read - [('/', 'allow'), ('/.*', 'allow')]
-2024-02-27 21:50:55,701 | DEBUG    | infuser / parse_policy       | write - [('/', 'allow'), ('/.*', 'allow')]
-2024-02-27 21:50:55,701 | DEBUG    | infuser / parse_policy       | execute - [('/', 'allow'), ('/.*', 'allow')]
-2024-02-27 21:50:55,701 | ERROR    | infuser / handle_state       | Could not load internal state from file - File /tmp/2024-02-27_21:50:55-infuser.json is empty.
-2024-02-27 21:50:59,198 | DEBUG    | infuser / check_state        | No entry recorded yet.
-2024-02-27 21:50:59,199 | DEBUG    | infuser / usage_with_uri     | External state allow access to /demo/uwu-data.txt: True
-2024-02-27 21:50:59,199 | DEBUG    | infuser / check_policy       | ACCESS (open) GRANTED --- Path: /demo/uwu-data.txt --- Policy-Entry: '/: True'
-2024-02-27 21:50:59,199 | DEBUG    | infuser / append             | Added entry {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:50:59', 'Success': True} to accessed objects
-2024-02-27 21:50:59,199 | DEBUG    | infuser / open               | SYSCALL (open) --- Flags: 32768 --- Path: /demo/uwu-data.txt
-2024-02-27 21:50:59,199 | DEBUG    | infuser / open               | open - 32768 - /demo/uwu-data.txt
-2024-02-27 21:50:59,199 | DEBUG    | infuser / check_state        | Last successful access: {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:50:59', 'Success': True}
-2024-02-27 21:50:59,199 | DEBUG    | infuser / check_state        | Policy 'written-no-execute' has no defined objects
-2024-02-27 21:50:59,199 | DEBUG    | infuser / check_state        | Policy 'first-object-only' has no defined objects
-2024-02-27 21:50:59,199 | DEBUG    | infuser / check_state        | Internal state allows access to /demo/uwu-data.txt: True
-2024-02-27 21:50:59,199 | DEBUG    | infuser / usage_with_uri     | Validating external state for /demo/uwu-data.txt and read
-2024-02-27 21:50:59,199 | INFO     | infuser / call_to_uri        | Requesting validation for mode read on /demo/uwu-data.txt from 127.0.0.1:2233
-2024-02-27 21:50:59,199 | DEBUG    | infuser / call_to_uri        | Sending /demo/uwu-data.txt,read to 127.0.0.1:2233
-2024-02-27 21:50:59,200 | ERROR    | infuser / call_to_uri        | ERROR - Socket error occurred: [Errno 104] Connection reset by peer
-2024-02-27 21:50:59,200 | INFO     | infuser / usage_with_uri     | Mode read on path: /demo/uwu-data.txt is allowed: None
-2024-02-27 21:50:59,201 | INFO     | infuser / check_policy       | ACCESS (read) DENIED --- Path: /demo/uwu-data.txt --- Policy-Entry: '/: True'
-2024-02-27 21:50:59,201 | DEBUG    | infuser / append             | Added entry {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'read', 'Time': '2024-02-27 21:50:59', 'Success': False} to accessed objects
-2024-02-27 21:50:59,202 | DEBUG    | infuser / check_state        | Last successful access: {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:50:59', 'Success': True}
-2024-02-27 21:50:59,202 | DEBUG    | infuser / check_state        | Policy 'written-no-execute' has no defined objects
-2024-02-27 21:50:59,202 | DEBUG    | infuser / check_state        | Policy 'first-object-only' has no defined objects
-2024-02-27 21:50:59,202 | DEBUG    | infuser / check_state        | Internal state allows access to /demo/uwu-data.txt: True
-2024-02-27 21:50:59,203 | DEBUG    | infuser / usage_with_uri     | Validating external state for /demo/uwu-data.txt and read
-2024-02-27 21:50:59,203 | INFO     | infuser / call_to_uri        | Requesting validation for mode read on /demo/uwu-data.txt from 127.0.0.1:2233
-2024-02-27 21:50:59,203 | ERROR    | infuser / call_to_uri        | ERROR - Socket error occurred: [Errno 111] Connection refused
-2024-02-27 21:50:59,203 | INFO     | infuser / usage_with_uri     | Mode read on path: /demo/uwu-data.txt is allowed: None
-2024-02-27 21:50:59,203 | INFO     | infuser / check_policy       | ACCESS (read) DENIED --- Path: /demo/uwu-data.txt --- Policy-Entry: '/: True'
-2024-02-27 21:50:59,203 | DEBUG    | infuser / append             | Added entry {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'read', 'Time': '2024-02-27 21:50:59', 'Success': False} to accessed objects
-2024-02-27 21:51:31,803 | DEBUG    | infuser / check_state        | Last successful access: {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:50:59', 'Success': True}
-2024-02-27 21:51:31,803 | DEBUG    | infuser / check_state        | Policy 'written-no-execute' has no defined objects
-2024-02-27 21:51:31,803 | DEBUG    | infuser / check_state        | Policy 'first-object-only' has no defined objects
-2024-02-27 21:51:31,803 | DEBUG    | infuser / check_state        | Internal state allows access to /demo/uwu-data.txt: True
-2024-02-27 21:51:31,803 | DEBUG    | infuser / usage_with_uri     | External state allow access to /demo/uwu-data.txt: True
-2024-02-27 21:51:31,803 | DEBUG    | infuser / check_policy       | ACCESS (open) GRANTED --- Path: /demo/uwu-data.txt --- Policy-Entry: '/: True'
-2024-02-27 21:51:31,803 | DEBUG    | infuser / append             | Added entry {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:51:31', 'Success': True} to accessed objects
-2024-02-27 21:51:31,803 | DEBUG    | infuser / open               | SYSCALL (open) --- Flags: 32768 --- Path: /demo/uwu-data.txt
-2024-02-27 21:51:31,803 | DEBUG    | infuser / open               | open - 32768 - /demo/uwu-data.txt
-2024-02-27 21:51:31,803 | DEBUG    | infuser / check_state        | Last successful access: {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:51:31', 'Success': True}
-2024-02-27 21:51:31,803 | DEBUG    | infuser / check_state        | Policy 'written-no-execute' has no defined objects
-2024-02-27 21:51:31,803 | DEBUG    | infuser / check_state        | Policy 'first-object-only' has no defined objects
-2024-02-27 21:51:31,803 | DEBUG    | infuser / check_state        | Internal state allows access to /demo/uwu-data.txt: True
-2024-02-27 21:51:31,803 | DEBUG    | infuser / usage_with_uri     | Validating external state for /demo/uwu-data.txt and read
-2024-02-27 21:51:31,803 | INFO     | infuser / call_to_uri        | Requesting validation for mode read on /demo/uwu-data.txt from 127.0.0.1:2233
-2024-02-27 21:51:31,804 | DEBUG    | infuser / call_to_uri        | Sending /demo/uwu-data.txt,read to 127.0.0.1:2233
-2024-02-27 21:51:31,804 | DEBUG    | infuser / call_to_uri        | Received /demo/uwu-data.txt,read,False from 127.0.0.1:2233
-2024-02-27 21:51:31,804 | INFO     | infuser / usage_with_uri     | Mode read on path: /demo/uwu-data.txt is allowed: False
-2024-02-27 21:51:31,804 | INFO     | infuser / check_policy       | ACCESS (read) DENIED --- Path: /demo/uwu-data.txt --- Policy-Entry: '/: True'
-2024-02-27 21:51:31,804 | DEBUG    | infuser / append             | Added entry {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'read', 'Time': '2024-02-27 21:51:31', 'Success': False} to accessed objects
-2024-02-27 21:51:31,804 | DEBUG    | infuser / check_state        | Last successful access: {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:51:31', 'Success': True}
-2024-02-27 21:51:31,804 | DEBUG    | infuser / check_state        | Policy 'written-no-execute' has no defined objects
-2024-02-27 21:51:31,804 | DEBUG    | infuser / check_state        | Policy 'first-object-only' has no defined objects
-2024-02-27 21:51:31,804 | DEBUG    | infuser / check_state        | Internal state allows access to /demo/uwu-data.txt: True
-2024-02-27 21:51:31,804 | DEBUG    | infuser / usage_with_uri     | Validating external state for /demo/uwu-data.txt and read
-2024-02-27 21:51:31,804 | INFO     | infuser / call_to_uri        | Requesting validation for mode read on /demo/uwu-data.txt from 127.0.0.1:2233
-2024-02-27 21:51:31,804 | DEBUG    | infuser / call_to_uri        | Sending /demo/uwu-data.txt,read to 127.0.0.1:2233
-2024-02-27 21:51:31,805 | DEBUG    | infuser / call_to_uri        | Received /demo/uwu-data.txt,read,False from 127.0.0.1:2233
-2024-02-27 21:51:31,805 | INFO     | infuser / usage_with_uri     | Mode read on path: /demo/uwu-data.txt is allowed: False
-2024-02-27 21:51:31,805 | INFO     | infuser / check_policy       | ACCESS (read) DENIED --- Path: /demo/uwu-data.txt --- Policy-Entry: '/: True'
-2024-02-27 21:51:31,805 | DEBUG    | infuser / append             | Added entry {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'read', 'Time': '2024-02-27 21:51:31', 'Success': False} to accessed objects
-2024-02-27 21:52:11,844 | DEBUG    | infuser / check_state        | Last successful access: {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:51:31', 'Success': True}
-2024-02-27 21:52:11,845 | DEBUG    | infuser / check_state        | Policy 'written-no-execute' has no defined objects
-2024-02-27 21:52:11,845 | DEBUG    | infuser / check_state        | Policy 'first-object-only' has no defined objects
-2024-02-27 21:52:11,845 | DEBUG    | infuser / check_state        | Internal state allows access to /demo/uwu-data.txt: True
-2024-02-27 21:52:11,845 | DEBUG    | infuser / usage_with_uri     | External state allow access to /demo/uwu-data.txt: True
-2024-02-27 21:52:11,845 | DEBUG    | infuser / check_policy       | ACCESS (open) GRANTED --- Path: /demo/uwu-data.txt --- Policy-Entry: '/: True'
-2024-02-27 21:52:11,845 | DEBUG    | infuser / append             | Added entry {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:52:11', 'Success': True} to accessed objects
-2024-02-27 21:52:11,845 | DEBUG    | infuser / open               | SYSCALL (open) --- Flags: 32768 --- Path: /demo/uwu-data.txt
-2024-02-27 21:52:11,845 | DEBUG    | infuser / open               | open - 32768 - /demo/uwu-data.txt
-2024-02-27 21:52:11,845 | DEBUG    | infuser / check_state        | Last successful access: {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:52:11', 'Success': True}
-2024-02-27 21:52:11,845 | DEBUG    | infuser / check_state        | Policy 'written-no-execute' has no defined objects
-2024-02-27 21:52:11,845 | DEBUG    | infuser / check_state        | Policy 'first-object-only' has no defined objects
-2024-02-27 21:52:11,845 | DEBUG    | infuser / check_state        | Internal state allows access to /demo/uwu-data.txt: True
-2024-02-27 21:52:11,845 | DEBUG    | infuser / usage_with_uri     | Validating external state for /demo/uwu-data.txt and read
-2024-02-27 21:52:11,845 | INFO     | infuser / call_to_uri        | Requesting validation for mode read on /demo/uwu-data.txt from 127.0.0.1:2233
-2024-02-27 21:52:11,845 | DEBUG    | infuser / call_to_uri        | Sending /demo/uwu-data.txt,read to 127.0.0.1:2233
-2024-02-27 21:52:11,848 | DEBUG    | infuser / call_to_uri        | Received /demo/uwu-data.txt,read,False from 127.0.0.1:2233
-2024-02-27 21:52:11,848 | INFO     | infuser / usage_with_uri     | Mode read on path: /demo/uwu-data.txt is allowed: False
-2024-02-27 21:52:11,848 | INFO     | infuser / check_policy       | ACCESS (read) DENIED --- Path: /demo/uwu-data.txt --- Policy-Entry: '/: True'
-2024-02-27 21:52:11,848 | DEBUG    | infuser / append             | Added entry {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'read', 'Time': '2024-02-27 21:52:11', 'Success': False} to accessed objects
-2024-02-27 21:52:11,848 | DEBUG    | infuser / check_state        | Last successful access: {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:52:11', 'Success': True}
-2024-02-27 21:52:11,848 | DEBUG    | infuser / check_state        | Policy 'written-no-execute' has no defined objects
-2024-02-27 21:52:11,848 | DEBUG    | infuser / check_state        | Policy 'first-object-only' has no defined objects
-2024-02-27 21:52:11,848 | DEBUG    | infuser / check_state        | Internal state allows access to /demo/uwu-data.txt: True
-2024-02-27 21:52:11,848 | DEBUG    | infuser / usage_with_uri     | Validating external state for /demo/uwu-data.txt and read
-2024-02-27 21:52:11,848 | INFO     | infuser / call_to_uri        | Requesting validation for mode read on /demo/uwu-data.txt from 127.0.0.1:2233
-2024-02-27 21:52:11,848 | DEBUG    | infuser / call_to_uri        | Sending /demo/uwu-data.txt,read to 127.0.0.1:2233
-2024-02-27 21:52:11,851 | DEBUG    | infuser / call_to_uri        | Received /demo/uwu-data.txt,read,False from 127.0.0.1:2233
-2024-02-27 21:52:11,851 | INFO     | infuser / usage_with_uri     | Mode read on path: /demo/uwu-data.txt is allowed: False
-2024-02-27 21:52:11,851 | INFO     | infuser / check_policy       | ACCESS (read) DENIED --- Path: /demo/uwu-data.txt --- Policy-Entry: '/: True'
-2024-02-27 21:52:11,851 | DEBUG    | infuser / append             | Added entry {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'read', 'Time': '2024-02-27 21:52:11', 'Success': False} to accessed objects
-2024-02-27 21:52:47,205 | DEBUG    | infuser / check_state        | Last successful access: {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:52:11', 'Success': True}
-2024-02-27 21:52:47,205 | DEBUG    | infuser / check_state        | Policy 'written-no-execute' has no defined objects
-2024-02-27 21:52:47,205 | DEBUG    | infuser / check_state        | Policy 'first-object-only' has no defined objects
-2024-02-27 21:52:47,205 | DEBUG    | infuser / check_state        | Internal state allows access to /demo/uwu-data.txt: True
-2024-02-27 21:52:47,205 | DEBUG    | infuser / usage_with_uri     | External state allow access to /demo/uwu-data.txt: True
-2024-02-27 21:52:47,205 | DEBUG    | infuser / check_policy       | ACCESS (open) GRANTED --- Path: /demo/uwu-data.txt --- Policy-Entry: '/: True'
-2024-02-27 21:52:47,205 | DEBUG    | infuser / append             | Added entry {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:52:47', 'Success': True} to accessed objects
-2024-02-27 21:52:47,205 | DEBUG    | infuser / open               | SYSCALL (open) --- Flags: 32768 --- Path: /demo/uwu-data.txt
-2024-02-27 21:52:47,205 | DEBUG    | infuser / open               | open - 32768 - /demo/uwu-data.txt
-2024-02-27 21:52:47,205 | DEBUG    | infuser / check_state        | Last successful access: {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'open', 'Time': '2024-02-27 21:52:47', 'Success': True}
-2024-02-27 21:52:47,206 | DEBUG    | infuser / check_state        | Policy 'written-no-execute' has no defined objects
-2024-02-27 21:52:47,206 | DEBUG    | infuser / check_state        | Policy 'first-object-only' has no defined objects
-2024-02-27 21:52:47,206 | DEBUG    | infuser / check_state        | Internal state allows access to /demo/uwu-data.txt: True
-2024-02-27 21:52:47,206 | DEBUG    | infuser / usage_with_uri     | Validating external state for /demo/uwu-data.txt and read
-2024-02-27 21:52:47,206 | INFO     | infuser / call_to_uri        | Requesting validation for mode read on /demo/uwu-data.txt from 127.0.0.1:2233
-2024-02-27 21:52:47,206 | DEBUG    | infuser / call_to_uri        | Sending /demo/uwu-data.txt,read to 127.0.0.1:2233
-2024-02-27 21:52:47,209 | DEBUG    | infuser / call_to_uri        | Received /demo/uwu-data.txt,read,True from 127.0.0.1:2233
-2024-02-27 21:52:47,209 | INFO     | infuser / usage_with_uri     | Mode read on path: /demo/uwu-data.txt is allowed: True
-2024-02-27 21:52:47,209 | DEBUG    | infuser / check_policy       | ACCESS (read) GRANTED --- Path: /demo/uwu-data.txt --- Policy-Entry: '/: True'
-2024-02-27 21:52:47,209 | DEBUG    | infuser / append             | Added entry {'Path': '/demo/uwu-data.txt', 'Prefix': '/demo', 'Access': 'read', 'Time': '2024-02-27 21:52:47', 'Success': True} to accessed objects
-2024-02-27 21:52:47,209 | DEBUG    | infuser / read               | read - /demo/uwu-data.txt
-[?2004hvagrant@AC-Dev:~/src$ [Kvagrant@AC-Dev:~/src$ exit
-[?2004lexit
-
-Script done on 2024-02-27 21:58:30+00:00 [COMMAND_EXIT_CODE="0"]
