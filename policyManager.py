@@ -96,7 +96,15 @@ def build_bubblewrap_command(policy_data, app_command, mount_point):
     # Ensure the mount point is properly bound and chdir to it
     bubblewrap_params.extend(["--bind", mount_point, "/", "--chdir", mount_point])
 
-    bwrap_command = ['bwrap'] + bubblewrap_params + app_command
+    # Remove duplicate bindings
+    unique_params = []
+    seen = set()
+    for param in bubblewrap_params:
+        if tuple(param) not in seen:
+            unique_params.append(param)
+            seen.add(tuple(param))
+
+    bwrap_command = ['bwrap'] + unique_params + app_command
 
     return bwrap_command
 

@@ -37,8 +37,7 @@ def launch_application(app_command, policy_file, default_policy_file, username, 
         # Merge policies
         policy_data = merge_policies(incomplete_policy, default_policy)
 
-        # Replace placeholders with the actual mount directory and username
-        policy_data = json.loads(json.dumps(policy_data).replace("{mount_point}", mount_dir))
+        # Replace placeholder with the actual username
         policy_data = json.loads(json.dumps(policy_data).replace("{username}", username))
 
         # Check and create the mount directory and necessary paths
