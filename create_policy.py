@@ -37,58 +37,20 @@ def generate_policy_file(app_name, bindings, network_access):
     """Generate a policy file based on the analyzed bindings and network access."""
     policy = {
         "allow_network": network_access,
-        "readable_paths": list(bindings),
+        "readable_paths": [],
         "writable_paths": [],
         "executable_paths": [],
-        "restricted_paths": [
-            "/home",
-            "/etc",
-            "/usr",
-            "/bin",
-            "/lib",
-            "/opt",
-            "/mnt",
-            "/media",
-            "/root",
-            "/sbin",
-            "/srv",
-            "/sys",
-            "/var",
-            "{mount_point}/home/{username}"
-        ],
-        "bubblewrap_params": [
-            "--new-session",
-            "--dev-bind", "/dev", "/dev",
-            "--proc", "/proc",
-            "--bind", "{mount_point}", "/",
-            "--chdir", "{mount_point}"
-        ]
+        "restricted_paths": []
     }
 
-    # Add writable and executable paths as necessary
+    # Determine readable, writable, and executable paths
     for path in bindings:
+        if os.access(path, os.R_OK):
+            policy["readable_paths"].append(path)
         if os.access(path, os.W_OK):
             policy["writable_paths"].append(path)
         if os.access(path, os.X_OK):
             policy["executable_paths"].append(path)
-
-    # Create bubblewrap bindings for read-only paths
-    for path in policy["readable_paths"]:
-        policy["bubblewrap_params"].append("--ro-bind")
-        policy["bubblewrap_params"].append(path)
-        policy["bubblewrap_params"].append("{mount_point}" + path)
-
-    # Create bubblewrap bindings for writable paths
-    for path in policy["writable_paths"]:
-        policy["bubblewrap_params"].append("--bind")
-        policy["bubblewrap_params"].append(path)
-        policy["bubblewrap_params"].append("{mount_point}" + path)
-
-    # Create bubblewrap bindings for executable paths
-    for path in policy["executable_paths"]:
-        policy["bubblewrap_params"].append("--bind")
-        policy["bubblewrap_params"].append(path)
-        policy["bubblewrap_params"].append("{mount_point}" + path)
 
     # Save the policy file
     policy_dir = "./policies"

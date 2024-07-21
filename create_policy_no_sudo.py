@@ -6,7 +6,7 @@ import getpass
 
 """
 Although the Script is called create_policy_no_sudo, you need to be able to install auditd and start it
-With apt it looks like this
+With apt it looks like this:
 
 sudo apt-get install auditd
 
@@ -14,8 +14,9 @@ sudo systemctl start auditd
 sudo systemctl enable auditd
 
 Once the service is enabled, this script can be run *without* sudo, which could be better for usability,
-but worse for security purposes, need to look into it more
+but worse for security purposes, need to look into it more.
 """
+
 def configure_auditd(app_name):
     """Configure auditd to monitor the application."""
     user = getpass.getuser()
@@ -75,20 +76,7 @@ def generate_policy_file(app_name, bindings, network_access):
         "readable_paths": list(bindings),
         "writable_paths": [],
         "executable_paths": [],
-        "restricted_paths": [
-            "/home",
-            "/etc",
-            "/usr",
-            "/bin"
-        ],
-        "bubblewrap_params": [
-            "--new-session",
-            "--dev-bind", "/dev", "/dev",
-            "--proc", "/proc",
-            "--dir", "/tmp",
-            "--bind", "{mount_point}", "/",
-            "--chdir", "{mount_point}"
-        ]
+        "restricted_paths": []
     }
 
     # Add writable and executable paths as necessary
