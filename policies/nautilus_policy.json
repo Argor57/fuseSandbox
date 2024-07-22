@@ -1,8 +1,6 @@
 {
   "allow_network": false,
   "readable_paths": [
-    "/tmp",
-    "/proc",
     "{mount_point}/nautilus_data"
   ],
   "writable_paths": [
@@ -14,12 +12,6 @@
   "restricted_paths": [
   ],
   "bubblewrap_params": [
-    "--new-session",
-    "--dev-bind", "/dev", "/dev",
-    "--proc", "/proc",
-    "--dir", "/tmp",
-    "--bind", "{mount_point}", "/",
-    "--chdir", "{mount_point}",
-    "--bind", "{mount_point}/nautilus_data", "{mount_point}/nautilus_data"
+    "--new-session"
   ]
 }
