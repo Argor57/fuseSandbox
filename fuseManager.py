@@ -1,4 +1,6 @@
+import socket
 import threading
+import json
 import os
 import logging
 import time
@@ -10,10 +12,12 @@ from fileOperations import FileOperations
 
 logging.basicConfig(level=logging.DEBUG)
 
-COUNTER_FILE = '/tmp/fuse_manager_counter'
+SOCKET_PATH = '/tmp/fuse_manager_socket'
+COUNTER_FILE = '/tmp/fuse_counter'
 fuse_thread = None
 mountpoint = None
 debug_mode = False
+counter = 0  # Add the counter variable here
 
 def is_fuse_mounted(mountpoint):
     return os.path.ismount(mountpoint) if mountpoint else False
@@ -94,7 +98,6 @@ def main():
     mountpoint = args.mountpoint
     debug_mode = args.debug
 
-    # Set up signal handlers
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
 
@@ -104,8 +107,7 @@ def main():
         if decrement_counter() == 0:
             if fuse_thread:
                 fuse_thread.join()
-                fuse_thread = None
+            fuse_thread = None
 
 if __name__ == '__main__':
     main()
-
