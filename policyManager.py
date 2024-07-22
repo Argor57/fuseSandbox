@@ -26,7 +26,9 @@ def build_bubblewrap_command(policy_data, app_command, mount_point):
         "--ro-bind", "/bin", "/bin",
         "--ro-bind", "/lib", "/lib",
         "--ro-bind", "/lib64", "/lib64",
-        "--ro-bind", "/usr", "/usr"
+        "--ro-bind", "/usr", "/usr",
+        "--ro-bind", "/sbin", "/sbin",  # Additional binding
+        "--ro-bind", "/etc", "/etc"   # Additional binding
     ])
     readable_paths = policy_data.get('readable_paths', [])
     writable_paths = policy_data.get('writable_paths', [])
