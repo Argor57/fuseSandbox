@@ -4,7 +4,6 @@ import subprocess
 import configparser
 import sys
 
-
 def merge_policies(incomplete_policy, default_policy):
     """Merge an incomplete policy with the default policy."""
     merged_policy = default_policy.copy()
@@ -19,94 +18,56 @@ def merge_policies(incomplete_policy, default_policy):
 def build_bubblewrap_command(policy_data, app_command, mount_point):
     """Build the Bubblewrap command from the policy data."""
     bubblewrap_params = []
-    path_bindings = {}
-
-    # Essential bindings for special directories
+    bubblewrap_params.extend(["--bind", mount_point, "/"])
     bubblewrap_params.extend([
         "--dev-bind", "/dev", "/dev",
-        "--proc", "/proc"
-        "--bind", "/tmp", "/tmp"
+        "--proc", "/proc",
+        "--ro-bind", "/sys", "/sys",
+        "--ro-bind", "/bin", "/bin",
+        "--ro-bind", "/lib", "/lib",
+        "--ro-bind", "/lib64", "/lib64",
+        "--ro-bind", "/usr", "/usr"
     ])
-
-    # Create lists for readable, writable, and executable paths
     readable_paths = policy_data.get('readable_paths', [])
     writable_paths = policy_data.get('writable_paths', [])
     executable_paths = policy_data.get('executable_paths', [])
-
-    # Create a list for read-write-execute paths
-    rwx_paths = []
-
-    # Compare executable and writable lists
-    for path in writable_paths:
-        if path in executable_paths:
-            rwx_paths.append(path)
-
-    # Remove paths in both readable and executable from readable list
-    for path in executable_paths:
-        if path in readable_paths:
-            readable_paths.remove(path)
-
-    def process_path(path_to_process, binding_type, noexec=False):
-        if "{mount_point}" in path_to_process:
-            dest_path = path_to_process.replace("{mount_point}", "")
-        else:
-            dest_path = path_to_process
-        bind_processed = [binding_type, path_to_process, dest_path]
-        if noexec:
-            bind_processed.append("--noexec")
-        return bind_processed
-
-    # Generate path bindings
-    for path in readable_paths:
-        path_bindings[path] = process_path(path, "--ro-bind", noexec=True)
-
-    for path in writable_paths:
-        if path not in rwx_paths:
-            path_bindings[path] = process_path(path, "--bind", noexec=True)
-
-    for path in executable_paths:
-        if path not in rwx_paths:
-            path_bindings[path] = process_path(path, "--ro-bind")
-
+    rwx_paths = [path for path in writable_paths if path in executable_paths]
+    
     for path in rwx_paths:
-        path_bindings[path] = process_path(path, "--bind")
-
-    # Add path bindings to bubblewrap parameters
-    for bind in path_bindings.values():
-        bubblewrap_params.extend(bind)
-
-    # Check if network access is allowed
-    if not policy_data.get('allow_network', False):
-        # If network access is not allowed, unshare all namespaces to isolate the network
-        bubblewrap_params.append('--unshare-all')
-    else:
-        # Unshare all namespaces except network
+        executable_paths.remove(path)
+    
+    for path in readable_paths:
         bubblewrap_params.extend([
-            '--unshare-pid',
-            '--unshare-uts',
-            '--unshare-ipc',
-            '--unshare-cgroup',
-            '--unshare-user',
-            '--unshare-mount'
+            "--ro-bind",
+            path.replace("{mount_point}", mount_point),
+            path.replace("{mount_point}", mount_point)
         ])
-
-    # Add any additional bubblewrap parameters
+    
+    for path in executable_paths:
+        bubblewrap_params.extend([
+            "--ro-bind",
+            path.replace("{mount_point}", mount_point),
+            path.replace("{mount_point}", mount_point)
+        ])
+    
+    for path in writable_paths:
+        bubblewrap_params.extend([
+            "--bind",
+            path.replace("{mount_point}", mount_point),
+            path.replace("{mount_point}", mount_point)
+        ])
+    
+    for path in rwx_paths:
+        bubblewrap_params.extend([
+            "--bind",
+            path.replace("{mount_point}", mount_point),
+            path.replace("{mount_point}", mount_point)
+        ])
+    
     bubblewrap_params.extend(policy_data.get('bubblewrap_params', []))
-
-    # Ensure the mount point is properly bound and chdir to it
-    bubblewrap_params.extend(["--bind", mount_point, "/", "--chdir", mount_point])
-
-    # Remove duplicate bindings
-    unique_params = []
-    seen = set()
-    for param in bubblewrap_params:
-        if tuple(param) not in seen:
-            unique_params.append(param)
-            seen.add(tuple(param))
-
-    bwrap_command = ['bwrap'] + unique_params + app_command
-
+    bwrap_command = ['bwrap'] + bubblewrap_params + app_command
     return bwrap_command
+
 
 
 def create_policy_ini(policy_json_path, mount_point, debug_mode, usemode):
@@ -162,28 +123,44 @@ def check_and_create_directory(mount_point, policy_data, username):
         "/media"
     ]
 
+def check_and_create_directory(mount_point, policy_data, username):
+    essential_dirs = [
+        "/tmp",
+        "/dev",
+        "/proc",
+        "/sys",
+        "/etc",
+        "/usr",
+        "/bin",
+        "/lib",
+        "/lib64",
+        "/var",
+        "/home",
+        "/opt",
+        "/run",
+        "/srv",
+        "/mnt",
+        "/media"
+    ]
+
     def create_path(path):
-        """Helper function to create a path and set ownership."""
         if not os.path.exists(path):
             try:
                 os.makedirs(path)
-                # Set the ownership to the specified user
-                uid = subprocess.check_output(['id', '-u', username]).strip()
-                gid = subprocess.check_output(['id', '-g', username]).strip()
-                os.chown(path, int(uid), int(gid))
+                print(f"Created path: {path}")
             except Exception as e:
                 print(f"[ERROR] Could not create path {path}: {e}")
                 sys.exit(1)
+        else:
+            print(f"Path already exists: {path}")
 
-    # Create the mount point directory if it doesn't exist
     create_path(mount_point)
-
-    # Check and create essential system directories
+    
     for dir_path in essential_dirs:
         full_path = os.path.join(mount_point, dir_path.lstrip('/'))
         create_path(full_path)
-
-    # Check and create paths specified in the policy
+    
     for path in policy_data.get('readable_paths', []) + policy_data.get('writable_paths', []) + policy_data.get('executable_paths', []):
         full_path = os.path.join(mount_point, path.lstrip('/'))
         create_path(full_path)
+
