@@ -55,11 +55,3 @@ sudo chown ${USERNAME}:${USERNAME} ${DESKTOP_DIR}/create_desktop_entry.desktop
 echo "Installation complete. The fuseSandbox script has been moved to ${TARGET_DIR}."
 echo "You can now use the Create Desktop Entry application from your desktop."
 
-# Check if the firefox.desktop file exists and copy it to the applications directory
-if [ -f "${CURRENT_DIR}/firefox.desktop" ]; then
-    sudo cp "${CURRENT_DIR}/firefox.desktop" /usr/share/applications/
-    echo "firefox.desktop has been copied to /usr/share/applications/."
-    sudo chown ${USERNAME}:${USERNAME} /usr/share/applications/firefox.desktop
-else
-    echo "firefox.desktop file not found."
-fi
