@@ -12,19 +12,6 @@
     "{mount_point}/nautilus_data"
   ],
   "restricted_paths": [
-    "/home",
-    "/etc",
-    "/usr",
-    "/bin",
-    "/lib",
-    "/lib64",
-    "/sbin",
-    "/sys",
-    "/dev",
-    "/root",
-    "/var",
-    "/opt",
-    "/srv"
   ],
   "bubblewrap_params": [
     "--new-session",
