@@ -1,38 +1,18 @@
 {
   "allow_network": false,
   "readable_paths": [
-    "/tmp",
-    "/proc",
-    "{mount_point}/libreoffice_data"
+    "/libreoffice_data"
   ],
   "writable_paths": [
-    "{mount_point}/libreoffice_data"
+    "/libreoffice_data"
   ],
   "executable_paths": [
-    "{mount_point}/libreoffice_data"
+    "/libreoffice_data"
   ],
   "restricted_paths": [
-    "/home",
-    "/etc",
-    "/usr",
-    "/bin",
-    "/lib",
-    "/lib64",
-    "/sbin",
-    "/sys",
-    "/dev",
-    "/root",
-    "/var",
-    "/opt",
-    "/srv"
   ],
   "bubblewrap_params": [
     "--new-session",
-    "--dev-bind", "/dev", "/dev",
-    "--proc", "/proc",
-    "--dir", "/tmp",
-    "--bind", "{mount_point}", "/",
-    "--chdir", "{mount_point}",
-    "--bind", "{mount_point}/libreoffice_data", "{mount_point}/libreoffice_data"
+    "--bind", "/libreoffice_data", "/libreoffice_data"
   ]
 }
