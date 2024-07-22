@@ -17,7 +17,6 @@
     "/tmp",
     "/var/tmp",
     "/home",
-    "/home/{username}/Downloads",
     "/home/{username}/.mozilla"
   ],
   "executable_paths": [
