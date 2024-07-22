@@ -1,9 +1,6 @@
 {
   "allow_network": true,
   "readable_paths": [
-    "/proc",
-    "/dev",
-    "/sys",
     "/etc/ssl",
     "/usr/lib/firefox",
     "/usr/lib/x86_64-linux-gnu",
@@ -14,46 +11,30 @@
     "/usr/share/glib-2.0",
     "/usr/share/pixmaps",
     "/usr/share/themes",
-    "/usr/share/X11",
-    "{mount_point}/usr/lib/firefox",
-    "{mount_point}/usr/lib/x86_64-linux-gnu",
-    "{mount_point}/lib/x86_64-linux-gnu",
-    "{mount_point}/usr/share/fonts",
-    "{mount_point}/usr/share/icons",
-    "{mount_point}/usr/share/mime",
-    "{mount_point}/usr/share/glib-2.0",
-    "{mount_point}/usr/share/pixmaps",
-    "{mount_point}/usr/share/themes",
-    "{mount_point}/usr/share/X11"
-  ],
+    "/usr/share/X11"
+  ], 
   "writable_paths": [
-    "{mount_point}/tmp",
-    "{mount_point}/var/tmp",
-    "{mount_point}/home/{username}/.mozilla",
-    "{mount_point}/home/{username}/Downloads"
+    "/tmp",
+    "/var/tmp",
+    "/home",
+    "/home/{username}/Downloads",
+    "/home/{username}/.mozilla"
   ],
   "executable_paths": [
-    "{mount_point}/usr/lib/firefox/firefox",
-    "{mount_point}/usr/lib/firefox/firefox-bin",
-    "{mount_point}/usr/bin"
+    "/usr/lib/firefox/firefox",
+    "/usr/lib/firefox/firefox-bin",
+    "/usr/bin"
   ],
   "restricted_paths": [
-    "/home",
-    "/etc",
-    "/usr",
-    "/bin",
-    "/lib",
-    "/opt",
-    "/mnt",
-    "/media",
-    "/root",
-    "/sbin",
-    "/srv",
-    "/sys",
-    "/var",
-    "{mount_point}/home/{username}"
   ],
   "bubblewrap_params": [
-    "--new-session"
+    "--new-session",
+    "--clearenv",
+    "--unshare-pid",
+    "--unshare-uts",
+    "--unshare-ipc",
+    "--unshare-cgroup",
+    "--unshare-user",
+    "--chdir", "/home"
   ]
 }
