@@ -104,26 +104,6 @@ def create_policy_ini(policy_json_path, mount_point, debug_mode, usemode):
 
     return policy_ini_path
 
-def check_and_create_directory(mount_point, policy_data, username):
-    """Check if the given directory is available for the user who ran the script. Create if it doesn't exist."""
-    essential_dirs = [
-        "/tmp",
-        "/dev",
-        "/proc",
-        "/sys",
-        "/etc",
-        "/usr",
-        "/bin",
-        "/lib",
-        "/lib64",
-        "/var",
-        "/home",
-        "/opt",
-        "/run",
-        "/srv",
-        "/mnt",
-        "/media"
-    ]
 
 def check_and_create_directory(mount_point, policy_data, username):
     essential_dirs = [
