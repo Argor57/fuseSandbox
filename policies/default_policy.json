@@ -1,27 +1,18 @@
 {
   "allow_network": false,
   "readable_paths": [
-    "/tmp",
-    "/proc"
+    "/home/{username}"
   ],
   "writable_paths": [
-    "/tmp"
-  ],
+  "/tmp"],
   "executable_paths": [
-    "/tmp"
   ],
   "restricted_paths": [
-    "/home",
-    "/etc",
-    "/usr",
-    "/bin"
   ],
   "bubblewrap_params": [
-    "--new-session",
-    "--dev-bind", "/dev", "/dev",
-    "--proc", "/proc",
-    "--dir", "/tmp",
-    "--bind", "{mount_point}", "/",
-    "--chdir", "{mount_point}"
+    "--unshare-all",
+    "--new-session"
   ]
 }
+
+

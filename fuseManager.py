@@ -1,96 +1,111 @@
-import socket
 import threading
-import json
 import os
-import subprocess
-import sys
-from fuse_scripts import infuser
 import logging
 import time
+import argparse
+import signal
+import subprocess
+from fuse import FUSE
+from fileOperations import FileOperations
 
-SOCKET_PATH = '/tmp/fuse_manager_socket'
-counter = 0
+logging.basicConfig(level=logging.DEBUG)
+
+COUNTER_FILE = '/tmp/fuse_manager_counter'
 fuse_thread = None
 mountpoint = None
-policy_dict = None
 debug_mode = False
 
-def mount_fuse_filesystem(mountpoint, dir_to_mount, policy_dict, uri_file, state_file, debug_mode):
-    """
-    Mount the FUSE filesystem using the infuser.py script.
-    """
-    try:
-        fuse_thread = threading.Thread(target=infuser.main, args=(mountpoint, dir_to_mount, policy_dict, uri_file, state_file))
-        fuse_thread.start()
-        # Wait a few seconds to ensure the FUSE filesystem is mounted
-        time.sleep(5)
-        return fuse_thread
-    except RuntimeError as e:
-        log = logging.getLogger("infuser")
-        log.critical(f"Error while trying to mount FileSystem: {e}")
-        log.critical(f"Check if {dir_to_mount} is maybe still mounted to {mountpoint} and if so, "
-                     f"unmount it with the following command:")
-        log.critical(f"sudo fusermount -u {mountpoint}")
-        sys.exit(0)
+def is_fuse_mounted(mountpoint):
+    return os.path.ismount(mountpoint) if mountpoint else False
+
+def run_fuse(mountpoint, debug_mode):
+    logging.info(f"Running FUSE with mountpoint: {mountpoint} and debug mode: {debug_mode}")
+    FUSE(FileOperations(mountpoint), mountpoint, foreground=True, nonempty=True)
+
+def mount_fuse_filesystem(mountpoint, debug_mode):
+    global fuse_thread
+    fuse_thread = threading.Thread(target=run_fuse, args=(mountpoint, debug_mode))
+    fuse_thread.start()
 
 def unmount_fuse_filesystem(mountpoint):
-    """
-    Unmount the FUSE filesystem.
-    """
-    subprocess.run(["fusermount", "-u", mountpoint])
+    if is_fuse_mounted(mountpoint):
+        logging.info(f'Unmounting {mountpoint}')
+        os.system(f'fusermount -u {mountpoint}')
 
-def handle_client(client_socket):
-    global counter, fuse_thread, mountpoint, policy_dict, debug_mode
-    try:
-        message = client_socket.recv(1024).decode('utf-8')
-        command = json.loads(message)
+def kill_fuse_processes():
+    logging.info('Killing FUSE processes')
+    result = subprocess.run(['pgrep', '-f', 'fuseManager.py'], stdout=subprocess.PIPE)
+    pids = result.stdout.decode().split()
+    for pid in pids:
+        try:
+            os.kill(int(pid), signal.SIGKILL)
+        except Exception as e:
+            logging.error(f"Failed to kill process {pid}: {e}")
 
-        if command['action'] == 'start':
-            counter += 1
-            if counter == 1:
-                # Start the FUSE filesystem
-                mountpoint = command['mountpoint']
-                policy_dict = command['policy_dict']
-                debug_mode = command['debug_mode']
-                fuse_thread = mount_fuse_filesystem(mountpoint, command['dir_to_mount'], policy_dict, 'uri_file.csv', 'state_file.json', debug_mode)
-            client_socket.send(b'ACK')
+def signal_handler(sig, frame):
+    """Handle termination signals to ensure clean unmounting of FUSE filesystem."""
+    global mountpoint
+    logging.info('Termination signal received. Unmounting FUSE filesystem and killing processes.')
+    if mountpoint:
+        unmount_fuse_filesystem(mountpoint)
+    kill_fuse_processes()
+    sys.exit(0)
 
-        elif command['action'] == 'stop':
-            counter -= 1
-            if counter == 0:
-                # Stop the FUSE filesystem
-                unmount_fuse_filesystem(mountpoint)
+def read_counter():
+    if os.path.exists(COUNTER_FILE):
+        with open(COUNTER_FILE, 'r') as file:
+            return int(file.read().strip())
+    return 0
+
+def write_counter(value):
+    with open(COUNTER_FILE, 'w') as file:
+        file.write(str(value))
+
+def increment_counter():
+    counter = read_counter()
+    counter += 1
+    write_counter(counter)
+    return counter
+
+def decrement_counter():
+    counter = read_counter()
+    counter -= 1
+    write_counter(counter)
+    return counter
+
+def manage_fuse(mountpoint, debug_mode):
+    global fuse_thread
+    if increment_counter() == 1:
+        mount_fuse_filesystem(mountpoint, debug_mode)
+    while read_counter() > 0:
+        time.sleep(1)
+    unmount_fuse_filesystem(mountpoint)
+
+def main():
+    global mountpoint, debug_mode
+
+    parser = argparse.ArgumentParser(description="Run FUSE filesystem")
+    parser.add_argument("--mountpoint", type=str, required=True, help="Directory for the FUSE mount point")
+    parser.add_argument("--debug", action="store_true", help="Enable debug mode")
+    parser.add_argument("--action", type=str, choices=["start", "stop"], required=True, help="Action to perform")
+
+    args = parser.parse_args()
+
+    mountpoint = args.mountpoint
+    debug_mode = args.debug
+
+    # Set up signal handlers
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+
+    if args.action == "start":
+        manage_fuse(mountpoint, debug_mode)
+    elif args.action == "stop":
+        if decrement_counter() == 0:
+            if fuse_thread:
                 fuse_thread.join()
                 fuse_thread = None
-            client_socket.send(b'ACK')
 
-    except Exception as e:
-        print(f"Error: {e}")
-        client_socket.send(b'NACK')
+if __name__ == '__main__':
+    main()
 
-    finally:
-        client_socket.close()
-
-def start_server():
-    if os.path.exists(SOCKET_PATH):
-        os.remove(SOCKET_PATH)
-
-    server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    server.bind(SOCKET_PATH)
-    server.listen(5)
-
-    print("Fuse Manager Server started")
-
-    while True:
-        client_socket, _ = server.accept()
-        client_handler = threading.Thread(target=handle_client, args=(client_socket,))
-        client_handler.start()
-
-def send_command(command):
-    """Send a command to the Fuse Manager Server."""
-    client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    client.connect(SOCKET_PATH)
-    client.send(json.dumps(command).encode('utf-8'))
-    response = client.recv(1024)
-    client.close()
-    return response == b'ACK'
